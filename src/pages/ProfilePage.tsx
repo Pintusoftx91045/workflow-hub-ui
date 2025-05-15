@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAppSelector, useAppDispatch } from "@/lib/store";
-import { updateUser } from "@/features/auth/authSlice";
+// import { updateUser } from "@/features/auth/authSlice";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import ClientSidebar from "@/components/sidebar/ClientSidebar";
 import AdminSidebar from "@/components/sidebar/AdminSidebar";
@@ -84,10 +84,10 @@ export default function ProfilePage() {
     // Simulate API delay
     setTimeout(() => {
       // Update user profile
-      dispatch(updateUser({
-        name: data.name,
-        email: data.email,
-      }));
+      // dispatch(updateUser({
+      //   name: data.name,
+      //   email: data.email,
+      // }));
       
       toast({
         title: "Profile updated",

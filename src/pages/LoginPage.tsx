@@ -1,15 +1,28 @@
-
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch } from "@/lib/store";
 import { setUserRole } from "@/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import { UserRole } from "@/features/auth/authSlice";
+import { setLocalStorageItem } from "@/utils/commonfun";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -20,17 +33,16 @@ export default function LoginPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !password) {
       toast.error("Please fill in all fields");
       return;
     }
-    
-    // In a real app, we would make an API call here
-    // For the demo, we'll just set the role
+
+    // Simulate login
     dispatch(setUserRole(role));
-    
-    // Navigate to the appropriate dashboard based on role
+
+    // Navigate to role-specific dashboard
     switch (role) {
       case "admin":
         navigate("/admin");
@@ -50,7 +62,16 @@ export default function LoginPage() {
       default:
         navigate("/");
     }
-    
+
+    // Save user to localStorage using utility
+    const loggedInUser = {
+      id: "1",
+      name: "Demo User",
+      email: email,
+      role: role,
+    };
+    setLocalStorageItem("user", loggedInUser);
+
     toast.success("Successfully logged in!");
   };
 
@@ -59,40 +80,47 @@ export default function LoginPage() {
       <div className="w-full max-w-md px-4">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold">WorkFlow Manager</h1>
-          <p className="text-muted-foreground mt-2">Log in to access your dashboard</p>
+          <p className="text-muted-foreground mt-2">
+            Log in to access your dashboard
+          </p>
         </div>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>Login</CardTitle>
-            <CardDescription>Enter your credentials to access your dashboard</CardDescription>
+            <CardDescription>
+              Enter your credentials to access your dashboard
+            </CardDescription>
           </CardHeader>
           <form onSubmit={handleLogin}>
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input 
-                  id="email" 
-                  type="email" 
-                  placeholder="you@example.com" 
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
-                <Input 
-                  id="password" 
-                  type="password" 
+                <Input
+                  id="password"
+                  type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              
+
               {/* Role selector for demo purposes */}
               <div className="space-y-2">
                 <Label htmlFor="role">Role (Demo)</Label>
-                <Select defaultValue={role} onValueChange={(value) => setRole(value as UserRole)}>
+                <Select
+                  defaultValue={role}
+                  onValueChange={(value) => setRole(value as UserRole)}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select a role" />
                   </SelectTrigger>
@@ -105,12 +133,15 @@ export default function LoginPage() {
                   </SelectContent>
                 </Select>
                 <p className="text-xs text-muted-foreground mt-1">
-                  This is for demo purposes only. Select a role to view different dashboards.
+                  This is for demo purposes only. Select a role to view
+                  different dashboards.
                 </p>
               </div>
             </CardContent>
             <CardFooter>
-              <Button type="submit" className="w-full">Log In</Button>
+              <Button type="submit" className="w-full">
+                Log In
+              </Button>
             </CardFooter>
           </form>
         </Card>
