@@ -34,7 +34,7 @@ export default function DashboardLayout({ children, sidebar }: DashboardLayoutPr
 
   return (
     <SidebarProvider defaultOpen={true}>
-      <div className="min-h-screen flex">
+      <div className="min-h-screen flex w-full">
         <div className={`fixed inset-y-0 z-30 transition-all ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0`}>
           <Sidebar className="h-full border-r">
             <SidebarHeader className="flex items-center justify-between p-4">
