@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -17,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
+import { addClient } from "@/features/dashboard/dashboardSlice";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -49,8 +49,14 @@ export default function AdminClients() {
   );
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    // In a real application, this would dispatch an action to add a client
-    // For now, we'll just show a toast notification
+    // Add client to the store
+    dispatch(addClient({
+      name: data.name,
+      company: data.company,
+      email: data.email,
+      status: 'active'
+    }));
+    
     toast({
       title: "Client added",
       description: `${data.name} from ${data.company} has been added.`,

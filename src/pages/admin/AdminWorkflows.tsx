@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -18,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
+import { addWorkflow } from "@/features/dashboard/dashboardSlice";
 
 const formSchema = z.object({
   title: z.string().min(2, { message: "Title must be at least 2 characters." }),
@@ -57,7 +57,15 @@ export default function AdminWorkflows() {
   );
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    // In a real application, this would dispatch an action to create a workflow
+    // Add workflow to the store
+    dispatch(addWorkflow({
+      title: data.title,
+      clientId: data.clientId,
+      priority: data.priority,
+      dueDate: data.dueDate,
+      assignedTo: selectedAssignees.length > 0 ? selectedAssignees : [],
+    }));
+    
     const clientName = clients.find(c => c.id === data.clientId)?.name || "";
     
     toast({
@@ -77,11 +85,12 @@ export default function AdminWorkflows() {
         : [...prev, teamMemberId]
     );
     
-    form.setValue("assignedTo", 
-      selectedAssignees.includes(teamMemberId)
-        ? selectedAssignees.filter(id => id !== teamMemberId)
-        : [...selectedAssignees, teamMemberId]
-    );
+    // Update form value
+    const newAssignees = selectedAssignees.includes(teamMemberId)
+      ? selectedAssignees.filter(id => id !== teamMemberId)
+      : [...selectedAssignees, teamMemberId];
+    
+    form.setValue("assignedTo", newAssignees);
   };
 
   const getStatusBadgeColor = (status: string) => {

@@ -1,4 +1,3 @@
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface Client {
@@ -319,6 +318,72 @@ const dashboardSlice = createSlice({
       };
       state.documents.push(newDocument);
     },
+    
+    addClient: (state, action: PayloadAction<Omit<Client, 'id' | 'avatar'>>) => {
+      const newClient = {
+        ...action.payload,
+        id: Date.now().toString(),
+        avatar: '/placeholder.svg',
+        status: action.payload.status || 'active'
+      };
+      state.clients.push(newClient);
+    },
+    
+    addTeamMember: (state, action: PayloadAction<Omit<TeamMember, 'id' | 'avatar'>>) => {
+      const newTeamMember = {
+        ...action.payload,
+        id: Date.now().toString(),
+        avatar: '/placeholder.svg'
+      };
+      state.teamMembers.push(newTeamMember);
+    },
+    
+    addWorkflow: (state, action: PayloadAction<{
+      title: string;
+      clientId: string;
+      priority: 'low' | 'medium' | 'high';
+      dueDate: string;
+      assignedTo: string[];
+    }>) => {
+      const { title, clientId, priority, dueDate, assignedTo } = action.payload;
+      const client = state.clients.find(c => c.id === clientId);
+      
+      if (client) {
+        const newWorkflow: Workflow = {
+          id: Date.now().toString(),
+          title,
+          clientId,
+          clientName: client.name,
+          status: 'draft',
+          priority,
+          dueDate,
+          progress: 25,
+          assignedTo
+        };
+        
+        state.workflows.push(newWorkflow);
+      }
+    },
+    
+    deleteClient: (state, action: PayloadAction<string>) => {
+      state.clients = state.clients.filter(client => client.id !== action.payload);
+    },
+    
+    deleteTeamMember: (state, action: PayloadAction<string>) => {
+      state.teamMembers = state.teamMembers.filter(member => member.id !== action.payload);
+    },
+    
+    deleteWorkflow: (state, action: PayloadAction<string>) => {
+      state.workflows = state.workflows.filter(workflow => workflow.id !== action.payload);
+    },
+    
+    deleteDocument: (state, action: PayloadAction<string>) => {
+      state.documents = state.documents.filter(document => document.id !== action.payload);
+    },
+    
+    deleteComment: (state, action: PayloadAction<string>) => {
+      state.comments = state.comments.filter(comment => comment.id !== action.payload);
+    }
   },
 });
 
@@ -339,6 +404,14 @@ export const {
   updateWorkflowStatus,
   updateDocumentStatus,
   addDocument,
+  addClient,
+  addTeamMember,
+  addWorkflow,
+  deleteClient,
+  deleteTeamMember,
+  deleteWorkflow,
+  deleteDocument,
+  deleteComment
 } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;
