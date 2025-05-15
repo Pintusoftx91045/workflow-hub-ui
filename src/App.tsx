@@ -13,6 +13,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import LoginPage from "./pages/LoginPage";
 import RoleDashboard from "./pages/RoleDashboard";
+import ProfilePage from "./pages/ProfilePage";
 
 // Admin pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -60,6 +61,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/dashboard" element={<RoleDashboard />} />
+              <Route path="/profile" element={<ProfilePage />} />
               
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminDashboard />} />
@@ -72,6 +74,7 @@ const App = () => (
               <Route path="/admin/templates" element={<AdminTemplates />} />
               <Route path="/admin/templates/:id" element={<AdminTemplates />} />
               <Route path="/admin/monitor" element={<AdminMonitor />} />
+              <Route path="/admin/settings" element={<ProfilePage />} />
               
               {/* Client Routes */}
               <Route path="/client" element={<ClientDashboard />} />
@@ -80,6 +83,7 @@ const App = () => (
               <Route path="/client/workflows/:id" element={<ClientWorkflows />} />
               <Route path="/client/documents" element={<ClientDocuments />} />
               <Route path="/client/documents/:id" element={<ClientDocuments />} />
+              <Route path="/client/settings" element={<ProfilePage />} />
               
               {/* Draft Team Routes */}
               <Route path="/draft" element={<DraftTeamDashboard />} />
@@ -87,6 +91,7 @@ const App = () => (
               <Route path="/draft/assigned/:id" element={<DraftAssigned />} />
               <Route path="/draft/upload" element={<DraftUpload />} />
               <Route path="/draft/notes" element={<DraftNotes />} />
+              <Route path="/draft/settings" element={<ProfilePage />} />
               
               {/* QC Team Routes */}
               <Route path="/qc" element={<QCDashboard />} />
@@ -96,6 +101,7 @@ const App = () => (
               <Route path="/qc/approved/:id" element={<QCApproved />} />
               <Route path="/qc/rework" element={<QCRework />} />
               <Route path="/qc/rework/:id" element={<QCRework />} />
+              <Route path="/qc/settings" element={<ProfilePage />} />
               
               {/* QA Team Routes */}
               <Route path="/qa" element={<QADashboard />} />
@@ -105,6 +111,7 @@ const App = () => (
               <Route path="/qa/approval/:id" element={<QAApproval />} />
               <Route path="/qa/corrections" element={<QACorrections />} />
               <Route path="/qa/corrections/:id" element={<QACorrections />} />
+              <Route path="/qa/settings" element={<ProfilePage />} />
               
               {/* Catch-all route */}
               <Route path="*" element={<NotFound />} />

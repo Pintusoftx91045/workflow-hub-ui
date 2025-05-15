@@ -7,9 +7,12 @@ import { Upload } from "lucide-react";
 import { useState } from "react";
 
 interface DocumentUploaderProps {
-  title: string;
+  title?: string;
   description?: string;
   onUpload?: (file: File) => void;
+  onFileSelected?: (file: File) => void;
+  maxSize?: number;
+  acceptedTypes?: string[];
   uploadButtonText?: string;
   allowedTypes?: string;
 }
@@ -18,8 +21,11 @@ export default function DocumentUploader({
   title,
   description,
   onUpload,
+  onFileSelected,
+  maxSize = 10,
   uploadButtonText = "Upload Document",
   allowedTypes = ".pdf, .doc, .docx",
+  acceptedTypes,
 }: DocumentUploaderProps) {
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -27,7 +33,11 @@ export default function DocumentUploader({
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]);
+      const selectedFile = e.target.files[0];
+      setFile(selectedFile);
+      if (onFileSelected) {
+        onFileSelected(selectedFile);
+      }
     }
   };
 
@@ -46,7 +56,11 @@ export default function DocumentUploader({
     setIsDragging(false);
     
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      setFile(e.dataTransfer.files[0]);
+      const selectedFile = e.dataTransfer.files[0];
+      setFile(selectedFile);
+      if (onFileSelected) {
+        onFileSelected(selectedFile);
+      }
     }
   };
 
@@ -72,10 +86,12 @@ export default function DocumentUploader({
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        {description && <CardDescription>{description}</CardDescription>}
-      </CardHeader>
+      {title && (
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          {description && <CardDescription>{description}</CardDescription>}
+        </CardHeader>
+      )}
       <CardContent>
         <div
           className={`border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center transition-colors ${
@@ -92,7 +108,7 @@ export default function DocumentUploader({
           <Input
             type="file"
             id="file-upload"
-            accept={allowedTypes}
+            accept={acceptedTypes?.join(", ") || allowedTypes}
             className="hidden"
             onChange={handleFileChange}
           />
@@ -105,7 +121,7 @@ export default function DocumentUploader({
             Select File
           </Button>
           <p className="text-xs text-muted-foreground">
-            Supported formats: {allowedTypes}
+            Supported formats: {acceptedTypes?.join(", ") || allowedTypes}
           </p>
         </div>
 
@@ -118,15 +134,17 @@ export default function DocumentUploader({
           </div>
         )}
       </CardContent>
-      <CardFooter>
-        <Button
-          className="w-full"
-          onClick={handleSubmit}
-          disabled={!file}
-        >
-          {uploadButtonText}
-        </Button>
-      </CardFooter>
+      {onUpload && (
+        <CardFooter>
+          <Button
+            className="w-full"
+            onClick={handleSubmit}
+            disabled={!file}
+          >
+            {uploadButtonText}
+          </Button>
+        </CardFooter>
+      )}
     </Card>
   );
 }

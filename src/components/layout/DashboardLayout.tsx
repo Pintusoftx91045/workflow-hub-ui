@@ -9,9 +9,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useAppSelector } from "@/lib/store";
 import { useNavigate } from "react-router-dom";
+import UserMenu from "@/components/layout/UserMenu";
+import Notifications from "@/components/layout/Notifications";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -20,16 +20,10 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children, sidebar }: DashboardLayoutProps) {
   const { theme, setTheme } = useTheme();
-  const navigate = useNavigate();
-  const user = useAppSelector((state) => state.auth.user);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const handleLogout = () => {
-    navigate("/login");
   };
 
   return (
@@ -58,38 +52,6 @@ export default function DashboardLayout({ children, sidebar }: DashboardLayoutPr
               <div className="p-4">
                 {sidebar}
               </div>
-              <div className="p-4 border-t mt-auto">
-                <div className="flex items-center justify-between mb-4">
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  >
-                    {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </Button>
-                </div>
-                {user && (
-                  <div className="flex items-center space-x-3">
-                    <Avatar>
-                      <AvatarImage src="/placeholder.svg" />
-                      <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="text-sm font-medium">{user.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
             </SidebarContent>
           </Sidebar>
         </div>
@@ -110,14 +72,17 @@ export default function DashboardLayout({ children, sidebar }: DashboardLayoutPr
               </span>
             </Button>
             <div className="ml-auto flex items-center space-x-2">
-              {user && (
-                <div className="md:hidden flex items-center space-x-2">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src="/placeholder.svg" />
-                    <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
-                  </Avatar>
-                </div>
-              )}
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="hidden md:flex"
+              >
+                {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                <span className="sr-only">Toggle theme</span>
+              </Button>
+              <Notifications />
+              <UserMenu />
             </div>
           </header>
 

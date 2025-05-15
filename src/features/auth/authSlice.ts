@@ -1,30 +1,31 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type UserRole = 'admin' | 'client' | 'draft' | 'qc' | 'qa';
-
-interface User {
+export interface User {
   id: string;
   name: string;
   email: string;
-  role: UserRole;
+  role: 'admin' | 'client' | 'draft' | 'qc' | 'qa';
   avatar?: string;
 }
 
-interface AuthState {
-  user: User | null;
-  token: string | null;
+export interface AuthState {
   isAuthenticated: boolean;
-  isLoading: boolean;
+  user: User | null;
   error: string | null;
+  isLoading: boolean;
 }
 
 const initialState: AuthState = {
-  user: null,
-  token: null,
-  isAuthenticated: false,
-  isLoading: false,
+  isAuthenticated: true, // For demo purposes
+  user: {
+    id: '1',
+    name: 'John Doe',
+    email: 'john@example.com',
+    role: 'admin',
+  },
   error: null,
+  isLoading: false,
 };
 
 const authSlice = createSlice({
@@ -35,38 +36,29 @@ const authSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     },
-    loginSuccess: (state, action: PayloadAction<{ user: User; token: string }>) => {
+    loginSuccess: (state, action: PayloadAction<User>) => {
       state.isLoading = false;
       state.isAuthenticated = true;
-      state.user = action.payload.user;
-      state.token = action.payload.token;
+      state.user = action.payload;
+      state.error = null;
     },
     loginFailure: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
+      state.isAuthenticated = false;
       state.error = action.payload;
     },
     logout: (state) => {
-      state.user = null;
-      state.token = null;
       state.isAuthenticated = false;
+      state.user = null;
     },
-    // For demo purposes
-    setUserRole: (state, action: PayloadAction<UserRole>) => {
+    updateUser: (state, action: PayloadAction<Partial<User>>) => {
       if (state.user) {
-        state.user.role = action.payload;
-      } else {
-        state.user = {
-          id: '1',
-          name: 'Demo User',
-          email: 'demo@example.com',
-          role: action.payload,
-        };
-        state.isAuthenticated = true;
+        state.user = { ...state.user, ...action.payload };
       }
-    },
+    }
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure, logout, setUserRole } = authSlice.actions;
+export const { loginStart, loginSuccess, loginFailure, logout, updateUser } = authSlice.actions;
 
 export default authSlice.reducer;
