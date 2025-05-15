@@ -79,7 +79,7 @@ export default function LoginPage() {
     <div className="flex items-center justify-center min-h-screen bg-muted/40">
       <div className="w-full max-w-md px-4">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold">WorkFlow Manager</h1>
+          <h1 className="text-3xl font-bold">WMS</h1>
           <p className="text-muted-foreground mt-2">
             Log in to access your dashboard
           </p>
@@ -132,10 +132,6 @@ export default function LoginPage() {
                     <SelectItem value="qa">QA Team</SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="text-xs text-muted-foreground mt-1">
-                  This is for demo purposes only. Select a role to view
-                  different dashboards.
-                </p>
               </div>
             </CardContent>
             <CardFooter>

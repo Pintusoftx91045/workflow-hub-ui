@@ -19,6 +19,7 @@ interface DashboardLayoutProps {
 }
 
 export default function DashboardLayout({ children, sidebar }: DashboardLayoutProps) {
+  console.log("🚀 ~ DashboardLayout ~ sidebar:", sidebar)
   const { theme, setTheme } = useTheme();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 

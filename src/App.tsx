@@ -46,6 +46,7 @@ import QADashboard from "./pages/qa/QADashboard";
 import QAReview from "./pages/qa/QAReview";
 import QAApproval from "./pages/qa/QAApproval";
 import QACorrections from "./pages/qa/QACorrections";
+import AdminRole from "./pages/admin/AdminRole";
 
 const queryClient = new QueryClient();
 
@@ -74,6 +75,7 @@ const App = () => (
               <Route path="/admin/templates" element={<AdminTemplates />} />
               <Route path="/admin/templates/:id" element={<AdminTemplates />} />
               <Route path="/admin/monitor" element={<AdminMonitor />} />
+              <Route path="/admin/role" element={<AdminRole />} />
               <Route path="/admin/settings" element={<ProfilePage />} />
               
               {/* Client Routes */}

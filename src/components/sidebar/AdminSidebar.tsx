@@ -6,7 +6,8 @@ import {
   Users, 
   FileText, 
   LayoutTemplate, 
-  BarChart
+  BarChart,
+  UserPlus
 } from "lucide-react";
 
 export default function AdminSidebar() {
@@ -22,6 +23,7 @@ export default function AdminSidebar() {
     { name: "Workflows", icon: FileText, path: "/admin/workflows" },
     { name: "Templates", icon: LayoutTemplate, path: "/admin/templates" },
     { name: "Monitor", icon: BarChart, path: "/admin/monitor" },
+    { name: "Role", icon: UserPlus, path: "/admin/role" },
   ];
   
   return (
