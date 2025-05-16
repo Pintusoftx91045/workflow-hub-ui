@@ -21,9 +21,9 @@ export default function AdminSidebar() {
     { name: "Clients", icon: Users, path: "/admin/clients" },
     { name: "Team", icon: Users, path: "/admin/team" },
     { name: "Workflows", icon: FileText, path: "/admin/workflows" },
-    { name: "Templates", icon: LayoutTemplate, path: "/admin/templates" },
+    // { name: "Templates", icon: LayoutTemplate, path: "/admin/templates" },
     { name: "Monitor", icon: BarChart, path: "/admin/monitor" },
-    { name: "Role", icon: UserPlus, path: "/admin/role" },
+    // { name: "Role", icon: UserPlus, path: "/admin/role" },
   ];
   
   return (
